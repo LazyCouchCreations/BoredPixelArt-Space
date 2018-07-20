@@ -25,7 +25,6 @@ public class Casing : MonoBehaviour {
 
 		if (player.GetComponent<Player>().isLookingLeft)
 		{
-			//myXforce = myXforce * -1;
 			myYforce = myYforce * -1;
 		}
 

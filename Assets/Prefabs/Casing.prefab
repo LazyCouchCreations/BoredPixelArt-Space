@@ -115,11 +115,11 @@ Rigidbody2D:
   m_Mass: 0.0017360507
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 5
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!70 &70288300360854984
 CapsuleCollider2D:
@@ -149,8 +149,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftAngleLimit: {fileID: 4236405073563552}
   rightAngleLimit: {fileID: 4823149402197936}
-  maxForce: 0.2
-  minForce: 0.1
+  maxForce: 0.8
+  minForce: 0.4
   maxAngularVelocity: 1000
   minAngularVelocity: 500
   maxLayer: 10

@@ -5,8 +5,12 @@ public class Player : MonoBehaviour {
 	private Rigidbody2D rb;
 
 	//running
-	public float speed;
+	public float horSpeed;
+	public float vertSpeed;
 	private float moveInput;
+	public float whiskerLength;
+	public Transform leftWhisker;
+	public Transform rightWhisker;
 
 	//jumping
 	public Transform feetPos;
@@ -23,6 +27,7 @@ public class Player : MonoBehaviour {
 	//facing
 	public bool isLookingLeft;
 	public GameObject gun;
+	public GameObject body;
 
 
 	private void Start()
@@ -39,19 +44,12 @@ public class Player : MonoBehaviour {
 			jumpInput = true;
 			upForce = groundJumpForce;
 		}
-		//if (Input.GetButton("Jump") && !isGrounded)
+		
+
+		//if (Input.GetButtonUp("Jump"))
 		//{
-		//	jumpInput = true;
-		//	if (airHoverTime >= 0)
-		//	{
-		//		airHoverTime -= Time.deltaTime;
-		//		upForce = airHoverForce;
-		//	}
+		//jumpInput = false;
 		//}
-		if (Input.GetButtonUp("Jump"))
-		{
-			jumpInput = false;
-		}
 
 
 		if (isLookingLeft)
@@ -66,7 +64,25 @@ public class Player : MonoBehaviour {
 
 	private void FixedUpdate()
 	{
-		rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
+		//detect slopes with whiskers
+		RaycastHit2D leftWhiskerHit = Physics2D.Raycast(leftWhisker.position, leftWhisker.up, whiskerLength, whatIsGround);
+		Debug.DrawRay(leftWhisker.position, leftWhisker.up * whiskerLength, Color.magenta);
+		RaycastHit2D rightWhiskerHit = Physics2D.Raycast(rightWhisker.position, rightWhisker.right, whiskerLength, whatIsGround);
+		Debug.DrawRay(rightWhisker.position, rightWhisker.right * whiskerLength, Color.magenta);
+		if (rightWhiskerHit)
+		{
+			//vertSpeed = moveInput * horSpeed/1.5f;
+			rb.velocity = rightWhisker.up * moveInput * horSpeed;
+		}else if (leftWhiskerHit)
+		{
+			//vertSpeed = -moveInput * horSpeed / 1.5f;
+			rb.velocity = leftWhisker.right * -moveInput * horSpeed;
+		}
+		else
+		{
+			rb.velocity = new Vector2(moveInput * horSpeed, rb.velocity.y);
+		}
+
 		isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
 		if (isGrounded)
 		{
@@ -75,20 +91,21 @@ public class Player : MonoBehaviour {
 
 		if (jumpInput && airHoverTime >= 0)
 		{
-			rb.AddForce(Vector2.up * upForce);
-			//rb.velocity = Vector2.up * upForce;
+			Vector2 halfwayVector = (rb.velocity + Vector2.up * upForce);
+			rb.velocity = halfwayVector;
+			jumpInput = false;
 		}		
 	}
 
 	private void LookLeft()
 	{
-		transform.SetPositionAndRotation(transform.position, Quaternion.Euler(0, 180, 0));
+		body.transform.SetPositionAndRotation(body.transform.position, Quaternion.Euler(0, 180, 0));
 		gun.GetComponent<SpriteRenderer>().flipY = true;
 	}
 
 	private void LookRight()
 	{
-		transform.SetPositionAndRotation(transform.position, Quaternion.Euler(0, 0, 0));
+		body.transform.SetPositionAndRotation(body.transform.position, Quaternion.Euler(0, 0, 0));
 		gun.GetComponent<SpriteRenderer>().flipY = false;
 	}
 }
