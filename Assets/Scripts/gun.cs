@@ -8,6 +8,7 @@ public class gun : MonoBehaviour {
 	public GameObject laserPointPrefab;
 	private GameObject laserPoint;
 	public LayerMask whatIsLaserHittable;
+	public GameObject bloodPrefab;
 
 	public GameObject casingPrefab;
 	public Transform casingSpawn;
@@ -28,24 +29,36 @@ public class gun : MonoBehaviour {
 		transform.right = worldMousePos - myFlatTransform;
 
 		Vector2 direction = (worldMousePos - myFlatTransform);
-		RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, 100, whatIsLaserHittable);
+		//ContactFilter2D filter = new ContactFilter2D();
+		//filter.SetLayerMask(whatIsLaserHittable);
+		//RaycastHit2D[] hits = new RaycastHit2D[]();
+		//Physics2D.Raycast(transform.position, direction, filter.layerMask, hits);
 
-		if (hit)
+		RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, 100f, whatIsLaserHittable);
+
+		if (hits.Length != 0)
 		{
 			laserPoint.GetComponent<SpriteRenderer>().enabled = true;
+			laserPoint.transform.position = hits[0].point;
 		}
 		else
 		{
 			laserPoint.GetComponent<SpriteRenderer>().enabled = false;
 		}
 
-		laserPoint.transform.position = hit.point;
+		
 
 		Debug.DrawRay(transform.position, transform.right * 10f, Color.red);
 
 		if (Input.GetButtonDown("Fire1"))
 		{
 			SpawnCasing();
+			if(hits[0].collider.tag == "Enemy")
+			{
+				GameObject blood = Instantiate(bloodPrefab, new Vector3(hits[0].point.x, hits[0].point.y, 0), transform.rotation);
+				blood.transform.DetachChildren();
+				Destroy(blood);
+			}
 		}
 
 		if(worldMousePos.x - myFlatTransform.x < 0)

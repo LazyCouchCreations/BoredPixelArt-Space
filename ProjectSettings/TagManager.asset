@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -17,8 +18,8 @@ TagManager:
   - laserHitable
   - casing
   - Ground
-  - 
-  - 
+  - Enemy
+  - Blood
   - 
   - 
   - 
@@ -41,6 +42,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Poddrick
+    uniqueID: 1545498441
+    locked: 0
   - name: Alice
     uniqueID: 3336428205
+    locked: 0
+  - name: Foreground
+    uniqueID: 74293855
     locked: 0

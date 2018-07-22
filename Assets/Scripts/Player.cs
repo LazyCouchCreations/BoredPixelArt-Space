@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Animations;
 
 public class Player : MonoBehaviour {
 
@@ -10,47 +12,70 @@ public class Player : MonoBehaviour {
 	private float moveInput;
 	public float whiskerLength;
 	public Transform leftWhisker;
+	private RaycastHit2D leftWhiskerHit;
 	public Transform rightWhisker;
+	private RaycastHit2D rightWhiskerHit;
 
 	//jumping
 	public Transform feetPos;
 	private bool jumpInput;
 	public float checkRadius;
 	public bool isGrounded;
+	public bool isJumping;
 	public LayerMask whatIsGround;
 	public float groundJumpForce;
 	public float airHoverForce;
 	public float upForce;
 	public float maxAirHoverTime;
 	public float airHoverTime;
+	public bool isFalling;
 
 	//facing
 	public bool isLookingLeft;
 	public GameObject gun;
 	public GameObject body;
 
+	//animations
+	public Animator animator;
+	public Animation walkAnim;
 
 	private void Start()
 	{
 		rb = GetComponent<Rigidbody2D>();
+		animator = GetComponent<Animator>();
 	}
 
 	private void Update()
 	{
-		moveInput = Input.GetAxis("Horizontal");
+		
+		moveInput = Input.GetAxisRaw("Horizontal");
+		if(moveInput == 0)
+		{
+			animator.SetBool("isWalking", false);
+		}
+		else
+		{
+			animator.SetBool("isWalking", true);
+			animator.SetFloat("walkSpeed", moveInput);
+		}
 
 		if (Input.GetButtonDown("Jump") && isGrounded)
 		{
 			jumpInput = true;
 			upForce = groundJumpForce;
 		}
-		
 
-		//if (Input.GetButtonUp("Jump"))
+		if (Input.GetButton("Jump") && isFalling)
+		{
+			jumpInput = true;
+			upForce = airHoverForce;
+		}
+
+		//if (Input.GetButtonDown("Jump") && isFalling)
 		//{
-		//jumpInput = false;
+		//	jumpInput = true;
+		//	upForce = airHoverForce;
 		//}
-
 
 		if (isLookingLeft)
 		{
@@ -65,18 +90,19 @@ public class Player : MonoBehaviour {
 	private void FixedUpdate()
 	{
 		//detect slopes with whiskers
-		RaycastHit2D leftWhiskerHit = Physics2D.Raycast(leftWhisker.position, leftWhisker.up, whiskerLength, whatIsGround);
+		leftWhiskerHit = Physics2D.Raycast(leftWhisker.position, leftWhisker.up, whiskerLength, whatIsGround);
 		Debug.DrawRay(leftWhisker.position, leftWhisker.up * whiskerLength, Color.magenta);
-		RaycastHit2D rightWhiskerHit = Physics2D.Raycast(rightWhisker.position, rightWhisker.right, whiskerLength, whatIsGround);
+		rightWhiskerHit = Physics2D.Raycast(rightWhisker.position, rightWhisker.right, whiskerLength, whatIsGround);
 		Debug.DrawRay(rightWhisker.position, rightWhisker.right * whiskerLength, Color.magenta);
+
 		if (rightWhiskerHit)
 		{
-			//vertSpeed = moveInput * horSpeed/1.5f;
 			rb.velocity = rightWhisker.up * moveInput * horSpeed;
+			isFalling = false;
 		}else if (leftWhiskerHit)
 		{
-			//vertSpeed = -moveInput * horSpeed / 1.5f;
 			rb.velocity = leftWhisker.right * -moveInput * horSpeed;
+			isFalling = false;
 		}
 		else
 		{
@@ -87,14 +113,23 @@ public class Player : MonoBehaviour {
 		if (isGrounded)
 		{
 			airHoverTime = maxAirHoverTime;
+			isFalling = false;
+		}
+
+		if(rb.velocity.y < 0 && !rightWhiskerHit && !leftWhiskerHit && !isGrounded)
+		{
+			isFalling = true;
 		}
 
 		if (jumpInput && airHoverTime >= 0)
 		{
-			Vector2 halfwayVector = (rb.velocity + Vector2.up * upForce);
+			Vector2 halfwayVector = (new Vector2(rb.velocity.x, 0) + Vector2.up * upForce);
 			rb.velocity = halfwayVector;
 			jumpInput = false;
-		}		
+			isJumping = true;
+			airHoverTime -= Time.fixedDeltaTime;
+		}
+		
 	}
 
 	private void LookLeft()
@@ -107,5 +142,18 @@ public class Player : MonoBehaviour {
 	{
 		body.transform.SetPositionAndRotation(body.transform.position, Quaternion.Euler(0, 0, 0));
 		gun.GetComponent<SpriteRenderer>().flipY = false;
+	}
+
+	public void Death()
+	{
+		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+	}
+
+	private void OnTriggerEnter2D(Collider2D collision)
+	{
+		if(collision.transform.tag == "Enemy")
+		{
+			Death();
+		}
 	}
 }
