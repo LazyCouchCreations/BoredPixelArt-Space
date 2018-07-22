@@ -15,9 +15,14 @@ public class gun : MonoBehaviour {
 
 	public GameObject player;
 
+	private AudioClip pew;
+	private AudioSource audio;
+
 	void Start()
 	{
 		laserPoint = Instantiate(laserPointPrefab);
+		audio = GetComponent<AudioSource>();
+		pew = audio.clip;
 	}
 
 	// Update is called once per frame
@@ -53,6 +58,8 @@ public class gun : MonoBehaviour {
 		if (Input.GetButtonDown("Fire1"))
 		{
 			SpawnCasing();
+			audio.pitch = Random.Range(.9f, 1.2f);
+			audio.PlayOneShot(pew);
 			if(hits[0].collider.tag == "Enemy")
 			{
 				GameObject blood = Instantiate(bloodPrefab, new Vector3(hits[0].point.x, hits[0].point.y, 0), transform.rotation);

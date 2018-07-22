@@ -111,8 +111,8 @@ Rigidbody2D:
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 1
-  m_Mass: 0.0017360507
+  m_UseAutoMass: 0
+  m_Mass: 0.001
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 5
@@ -149,8 +149,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftAngleLimit: {fileID: 4236405073563552}
   rightAngleLimit: {fileID: 4823149402197936}
-  maxForce: 0.8
-  minForce: 0.4
+  maxForce: 0.4
+  minForce: 0.3
   maxAngularVelocity: 1000
   minAngularVelocity: 500
   maxLayer: 10
@@ -190,7 +190,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -958539091
-  m_SortingLayer: 1
+  m_SortingLayer: 2
   m_SortingOrder: 100
   m_Sprite: {fileID: 21300000, guid: 4ed28ec30ad083b4da60651391f25604, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
