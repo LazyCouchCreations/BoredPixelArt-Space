@@ -9,6 +9,7 @@ public class gun : MonoBehaviour {
 	private GameObject laserPoint;
 	public LayerMask whatIsLaserHittable;
 	public GameObject bloodPrefab;
+	public float gunRange;
 
 	public GameObject casingPrefab;
 	public Transform casingSpawn;
@@ -16,11 +17,18 @@ public class gun : MonoBehaviour {
 	public GameObject player;
 
 	private AudioClip pew;
-	private AudioSource audio;
+	private new AudioSource audio;
+
+	private static bool isLaserCreated = false;
 
 	void Start()
 	{
-		laserPoint = Instantiate(laserPointPrefab);
+		if (!isLaserCreated)
+		{
+			laserPoint = Instantiate(laserPointPrefab);
+			isLaserCreated = true;
+			DontDestroyOnLoad(laserPoint);
+		}		
 		audio = GetComponent<AudioSource>();
 		pew = audio.clip;
 	}
@@ -34,38 +42,46 @@ public class gun : MonoBehaviour {
 		transform.right = worldMousePos - myFlatTransform;
 
 		Vector2 direction = (worldMousePos - myFlatTransform);
-		//ContactFilter2D filter = new ContactFilter2D();
-		//filter.SetLayerMask(whatIsLaserHittable);
-		//RaycastHit2D[] hits = new RaycastHit2D[]();
-		//Physics2D.Raycast(transform.position, direction, filter.layerMask, hits);
 
-		RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, 100f, whatIsLaserHittable);
-
-		if (hits.Length != 0)
+		RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, gunRange, whatIsLaserHittable);
+		try
 		{
-			laserPoint.GetComponent<SpriteRenderer>().enabled = true;
-			laserPoint.transform.position = hits[0].point;
+			if (hits.Length != 0)
+			{
+				laserPoint.GetComponent<SpriteRenderer>().enabled = true;
+				laserPoint.transform.position = hits[0].point;
+			}
+			else
+			{
+				laserPoint.GetComponent<SpriteRenderer>().enabled = false;
+			}
 		}
-		else
+		catch
 		{
-			laserPoint.GetComponent<SpriteRenderer>().enabled = false;
-		}
 
-		
+		}		
 
-		Debug.DrawRay(transform.position, transform.right * 10f, Color.red);
+		Debug.DrawRay(transform.position, transform.right * gunRange, Color.red);
 
 		if (Input.GetButtonDown("Fire1"))
 		{
 			SpawnCasing();
 			audio.pitch = Random.Range(.9f, 1.2f);
 			audio.PlayOneShot(pew);
-			if(hits[0].collider.tag == "Enemy")
+			try
 			{
-				GameObject blood = Instantiate(bloodPrefab, new Vector3(hits[0].point.x, hits[0].point.y, 0), transform.rotation);
-				blood.transform.DetachChildren();
-				Destroy(blood);
+				if (hits[0].collider.tag == "Enemy")
+				{
+					hits[0].collider.gameObject.GetComponent<Enemy>().TakeDamage();
+					GameObject blood = Instantiate(bloodPrefab, new Vector3(hits[0].point.x, hits[0].point.y, 0), transform.rotation);
+					blood.transform.DetachChildren();
+					Destroy(blood);
+				}
 			}
+			catch
+			{
+
+			}					
 		}
 
 		if(worldMousePos.x - myFlatTransform.x < 0)

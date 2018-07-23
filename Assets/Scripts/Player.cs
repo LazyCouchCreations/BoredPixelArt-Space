@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Animations;
 
 public class Player : MonoBehaviour {
 
 	private Rigidbody2D rb;
+	public Transform startPos;
+	public Transform middlePos;
 
 	//running
 	public float horSpeed;
@@ -37,10 +38,25 @@ public class Player : MonoBehaviour {
 
 	//animations
 	public Animator animator;
-	public Animation walkAnim;
+
+	private static bool isCreated = false;
+
+	private void Awake()
+	{
+		if (!isCreated)
+		{
+			DontDestroyOnLoad(gameObject);
+			isCreated = true;
+		}
+		else
+		{
+			Destroy(gameObject);
+		}
+	}
 
 	private void Start()
 	{
+		
 		rb = GetComponent<Rigidbody2D>();
 		animator = GetComponent<Animator>();
 	}
@@ -70,12 +86,6 @@ public class Player : MonoBehaviour {
 			jumpInput = true;
 			upForce = airHoverForce;
 		}
-
-		//if (Input.GetButtonDown("Jump") && isFalling)
-		//{
-		//	jumpInput = true;
-		//	upForce = airHoverForce;
-		//}
 
 		if (isLookingLeft)
 		{
@@ -146,7 +156,17 @@ public class Player : MonoBehaviour {
 
 	public void Death()
 	{
-		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+		startPos = GameObject.FindGameObjectWithTag("Start").transform;
+		middlePos = GameObject.FindGameObjectWithTag("Middle").transform;
+		if (transform.position.x > middlePos.position.x)
+		{
+			transform.position = middlePos.position;
+		}
+		else
+		{
+			transform.position = startPos.position;
+		}
+		SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)

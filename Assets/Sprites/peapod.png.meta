@@ -85,14 +85,14 @@ TextureImporter:
     androidETC2FallbackOverride: 0
   - serializedVersion: 2
     buildTarget: WebGL
-    maxTextureSize: 2048
+    maxTextureSize: 64
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
-    overridden: 0
+    overridden: 1
     androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
@@ -112,7 +112,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1342b4df1a593ad4d9cfedc2ec948d59
+      spriteID: 43319a76ad190ad4cbcda8ca7775caa2
       vertices: []
       indices: 
       edges: []
@@ -129,27 +129,10 @@ TextureImporter:
       pivot: {x: 0.49809343, y: 0.061014507}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape:
-      - - {x: -5, y: 20.5}
-        - {x: -10, y: 20.5}
-        - {x: -12, y: 18.5}
-        - {x: -12, y: 11.5}
-        - {x: -10, y: 10.5}
-        - {x: -11, y: 0.5}
-        - {x: -11, y: -6.5}
-        - {x: -8, y: -28.5}
-        - {x: -6, y: -28.5}
-        - {x: 6, y: -18.5}
-        - {x: 10, y: -8.5}
-        - {x: 10, y: -0.5}
-        - {x: 7, y: 9.5}
-        - {x: 11, y: 12.5}
-        - {x: 11, y: 18.5}
-        - {x: 2, y: 19.5}
-        - {x: -5, y: 28.5}
+      physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e26e3f41fc0eed442b56a033ec34cede
+      spriteID: 413d9760d5b79164a8eeceb83ca86abc
       vertices: []
       indices: 
       edges: []
@@ -169,7 +152,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 41472badc08b9c14cbdd9f3dbc273d32
+      spriteID: 90cb881d937ae314b9b1212084a582b2
       vertices: []
       indices: 
       edges: []

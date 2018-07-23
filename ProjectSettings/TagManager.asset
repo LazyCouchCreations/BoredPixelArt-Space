@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
+  - Ground
+  - Start
+  - Middle
   layers:
   - Default
   - TransparentFX

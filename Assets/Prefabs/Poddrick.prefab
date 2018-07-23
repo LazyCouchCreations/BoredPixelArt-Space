@@ -81,7 +81,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4387242210110150}
   - component: {fileID: 114498527285494106}
-  - component: {fileID: 60640360574745618}
   m_Layer: 9
   m_Name: UpperTorso
   m_TagString: Enemy
@@ -149,7 +148,7 @@ GameObject:
   m_Layer: 0
   m_Name: 2
   m_TagString: Untagged
-  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -197,7 +196,7 @@ GameObject:
   m_Layer: 0
   m_Name: 1
   m_TagString: Untagged
-  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -211,11 +210,11 @@ GameObject:
   - component: {fileID: 4506600965587628}
   - component: {fileID: 114400252462382568}
   - component: {fileID: 95452705052123562}
-  - component: {fileID: 70892550901550090}
   - component: {fileID: 50998902071784500}
-  m_Layer: 12
+  - component: {fileID: 60660539840867374}
+  m_Layer: 9
   m_Name: Body and brain
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -228,6 +227,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4735321351069816}
+  - component: {fileID: 70423596895406364}
   m_Layer: 12
   m_Name: whiskers
   m_TagString: Untagged
@@ -279,7 +279,7 @@ GameObject:
   m_Layer: 12
   m_Name: feet
   m_TagString: Untagged
-  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -294,7 +294,7 @@ GameObject:
   m_Layer: 9
   m_Name: lineOfSight
   m_TagString: Untagged
-  m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -331,7 +331,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1531640494165486}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.39, y: -0.05000019, z: 0}
+  m_LocalPosition: {x: -0.59, y: -1.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4693302698299784}
@@ -426,7 +426,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1669362374102990}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.17, y: -0.35, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4735321351069816}
@@ -486,7 +486,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1654085322908798}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.17, y: -0.05, z: 0}
+  m_LocalPosition: {x: 1.38, y: -1.19, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4693302698299784}
@@ -499,7 +499,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1372467945828116}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.44, y: 4.68, z: 0}
+  m_LocalPosition: {x: -1.07, y: 3.63, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4506600965587628}
@@ -569,12 +569,12 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!60 &60640360574745618
+--- !u!60 &60660539840867374
 PolygonCollider2D:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1285913274958608}
+  m_GameObject: {fileID: 1669362374102990}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -593,14 +593,11 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.36918408, y: 0.17447755}
-      - {x: 0.02557291, y: 0.19472784}
-      - {x: -0.33063588, y: 0.13944203}
-      - {x: -0.3392856, y: 0.034177378}
-      - {x: -0.19621044, y: -0.16111632}
-      - {x: 0.20572695, y: -0.19055456}
-      - {x: 0.36641464, y: -0.20848669}
-      - {x: 0.5938195, y: 0.06421079}
+    - - {x: 0.016435668, y: 0.81509984}
+      - {x: -0.10873385, y: 0.32956156}
+      - {x: -0.033084586, y: -0.06530753}
+      - {x: 0.20154957, y: 0.08672151}
+      - {x: 0.25665343, y: 0.31312618}
 --- !u!61 &61010616644944278
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -651,20 +648,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.16863322, y: 0.13427877}
   m_EdgeRadius: 0
---- !u!70 &70892550901550090
+--- !u!70 &70423596895406364
 CapsuleCollider2D:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1669362374102990}
+  m_GameObject: {fileID: 1702613528259200}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.072846174, y: 0.42406833}
-  m_Size: {x: 0.34390116, y: 0.9323566}
+  m_Offset: {x: 0.06413782, y: 0.37949145}
+  m_Size: {x: 0.30758667, y: 0.8325107}
   m_Direction: 0
 --- !u!95 &95452705052123562
 Animator:
@@ -732,11 +729,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wayPoints:
+  - {fileID: 0}
   - {fileID: 4760222774967396}
   - {fileID: 4061524130998414}
   feetPos: {fileID: 4240260431936006}
   lineOfSightPos: {fileID: 4979729564819250}
-  lineOfSightDistance: 4
+  lineOfSightDistance: 8
   jumpRight: {fileID: 4199119527473112}
   checkRadius: 0.1
   whatIsGround:
@@ -747,14 +745,22 @@ MonoBehaviour:
     m_Bits: 2049
   mySpeed: 0
   speed: 1
-  jumpForce: 12
-  whiskerLength: 0.58
+  jumpForce: 12.1
+  whiskerLength: 0.6
   isGrounded: 0
   isJumping: 0
   isGoingRight: 0
   isAggressive: 0
   currentWayPoint: 0
   player: {fileID: 0}
+  currentHealth: 0
+  maxHealth: 3
+  losTargets: []
+  whichAttack: 0
+  peaPrefab: {fileID: 1183438790771242, guid: b2b233831b1cd6540a7dcdf19022f9c3, type: 2}
+  peaPos: {fileID: 4974999856123514}
+  isThrowing: 0
+  throwCooldown: 3
 --- !u!114 &114498527285494106
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -840,7 +846,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 1, g: 0.28773582, b: 0.28773582, a: 1}
-  m_Length: 0.30343723
+  m_Length: 0.30343744
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4387242210110150}
   m_AttachedIK: {fileID: 0}

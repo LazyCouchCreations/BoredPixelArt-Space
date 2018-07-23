@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Animations;
 
 public class Enemy : MonoBehaviour {
 
@@ -21,21 +24,43 @@ public class Enemy : MonoBehaviour {
 	public bool isAggressive;
 	public int currentWayPoint;
 	public GameObject player;
+	public int currentHealth;
+	public int maxHealth;
 
+	//attack
+	public Transform[] losTargets;
+	public int whichAttack;
+	private Animator animator;
+
+	//poddrick
+	public GameObject peaPrefab;
+	public Transform peaPos;
+	public bool isThrowing;
+	public float throwCooldown;
+	private float remainingThrowCooldown;
+
+	
 	// Use this for initialization
 	void Start () {
+		currentHealth = maxHealth;
+		remainingThrowCooldown = 0;
 		rb = GetComponent<Rigidbody2D>();
 		player = GameObject.FindGameObjectWithTag("Player");
-		//if (wayPoints[0] == null)
-		//{
-		//	wayPoints[0] = player.transform;
-		//}
-		currentWayPoint = 0;
+		losTargets = new Transform[3];
+		losTargets[0] = player.transform;
+		losTargets[1] = player.GetComponentInChildren<Transform>().Find("HeadPos");
+		losTargets[2] = player.GetComponentInChildren<Transform>().Find("FeetPos");
+		animator = GetComponent<Animator>();
+		if (wayPoints[0] == null)
+		{
+			wayPoints[0] = player.transform;
+		}
+		currentWayPoint = 1;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		LookForThePlayer();
+		LookForThePlayer(0);
 	}
 
 	private void FixedUpdate()
@@ -64,7 +89,7 @@ public class Enemy : MonoBehaviour {
 			transform.SetPositionAndRotation(transform.position, Quaternion.Euler(0, 180, 0));
 		}
 
-		if (isGrounded && !isJumping)
+		if (isGrounded && !isJumping && !isThrowing)
 		{
 			rb.velocity = new Vector2(mySpeed, rb.velocity.y);
 		}
@@ -73,7 +98,16 @@ public class Enemy : MonoBehaviour {
 		if (isGrounded && rightWhiskerHit)
 		{
 			rb.velocity = jumpRight.up * jumpForce;
-		}				
+		}
+		
+		if(remainingThrowCooldown > 0)
+		{
+			remainingThrowCooldown -= Time.fixedDeltaTime;
+		}
+		else
+		{
+			remainingThrowCooldown = 0;
+		}
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
@@ -92,22 +126,82 @@ public class Enemy : MonoBehaviour {
 		}
 		else
 		{
-			return 0;
+			return 1;
 		}
 	}
 
-	private void LookForThePlayer()
+	public void TakeDamage()
 	{
-		lineOfSightPos.LookAt(player.transform);
-		Debug.DrawRay(lineOfSightPos.position, lineOfSightPos.forward * lineOfSightDistance, Color.red);
-		RaycastHit2D lineOfSightToPlayer = Physics2D.Raycast(lineOfSightPos.position, lineOfSightPos.forward, lineOfSightDistance, whatIsLineOfSight);
-
-		if (lineOfSightToPlayer)
+		currentHealth -= 1;
+		if(currentHealth <= 0)
 		{
-			if (lineOfSightToPlayer.transform.tag == "Player")
-			{
+			Death();
+		}
+	}
 
+	private void Death()
+	{
+		Destroy(gameObject);
+	}
+
+	private void LookForThePlayer(int targID)
+	{
+		try
+		{
+			lineOfSightPos.LookAt(losTargets[targID]);
+			RaycastHit2D lineOfSightToPlayer;
+
+			if (lineOfSightToPlayer = Physics2D.Raycast(lineOfSightPos.position, lineOfSightPos.forward, lineOfSightDistance, whatIsLineOfSight))
+			{
+				if (lineOfSightToPlayer.transform.tag == "Player")
+				{
+					switch (whichAttack)
+					{
+						case 0:
+							Poddrick();
+							break;
+						case 1:
+							Broccolist();
+							break;
+					}						
+				}
+			}
+			else
+			{
+				LookForThePlayer(targID + 1);
 			}
 		}
+		catch
+		{
+			//do nothing, ran out of targets
+		}		
 	}
+
+	private void Broccolist()
+	{
+		
+	}
+
+	private void Poddrick()
+	{
+		if(remainingThrowCooldown == 0)
+		{
+			remainingThrowCooldown = throwCooldown;
+			currentWayPoint = 0;
+			animator.SetTrigger("Throw");
+			isThrowing = true;
+		}		
+	}
+
+	private void Poddrick_Throw()
+	{
+		Instantiate(peaPrefab, peaPos.position, lineOfSightPos.rotation);
+	}
+
+	private void Poddrick_StopThrowing()
+	{
+		isThrowing = false;		
+		currentWayPoint = FindNextWaypoint(currentWayPoint);
+	}
+
 }
